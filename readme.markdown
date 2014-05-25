@@ -202,6 +202,13 @@ usage:
   //time how long it takes for centers to converge
   console.time('kmeans2D-1K');
   
+  //listen for centers positions update
+  //this is handy for animations
+  kmeans.onCentersUpdated = function(newCenters, iteration){
+    console.log('iteration: ' + iteration);
+    console.dir(newCenters);
+  };
+  
   //compile the kmeans algorithm with the point cloud, the number of desired clusters and a cb
   kmeans.compile(randomPoints, 10, function(err, data){
     
@@ -231,7 +238,7 @@ var KMEANS = require('kmeanie');
 
 Create a k-means algo instance;
 
-## kmeans.compile(points, cluster-number, cb);
+## kmeans.compile(points, numOfClusters, cb);
 
 The more fitpoints you have, the longer it takes to compile.
 The more dimensions you have, the longer it takes to compile.
@@ -240,11 +247,12 @@ The more clusters you have, the longer it takes to compile.
 
 `cb(err, data)` signature.
 
-## kmeans.onCentersUpdated(function(newCenters){..});
+## kmeans.onCentersUpdated = function(newCenters, iteration){..};
 
 * update event for center adjustment
-* `cb(newCenters)` signature
+* `cb(newCenters, iteration)` signature
 * `newCenters` is the newly moved cluster center points
+* `iteration` is the current iteration count
 
 
 # install

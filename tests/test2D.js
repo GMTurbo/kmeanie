@@ -29,6 +29,12 @@ var randomPoints = getPoints(1000, 2, -10000, 10000);
 
 console.time('kmeans2D-1K');
 
+//listen for centers positions update
+kmeans1.onCentersUpdated = function(newCenters, iteration){
+    console.log('iteration: ' + iteration);
+    console.dir(newCenters);
+};
+
 kmeans1.compile(randomPoints, 10, function(err, data){
   
   if(err){ console.error(err); return; }

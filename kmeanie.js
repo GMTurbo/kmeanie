@@ -37,7 +37,7 @@ var KMEANS = function(){
           });
           
           if(this.onCentersUpdated){
-            this.onCentersUpdated(oldCenters);
+            this.onCentersUpdated(oldCenters, steps + 1);
           }
           
           steps++;
@@ -64,7 +64,7 @@ var KMEANS = function(){
             return cent.center;
           });
           
-    var tolerance = 1e-4;
+    var tolerance = 1e-6;
     
     for(var i = 0 ; i < newCenters.length; i++){
       
