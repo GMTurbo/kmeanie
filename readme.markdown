@@ -173,7 +173,7 @@ k-means clustering is a method of vector quantization, originally from signal pr
 ```
 usage:
 
-  var KMEANS = require('Kmeanie');
+  var KMEANS = require('kmeanie');
   
   //utility function to get random points
   
