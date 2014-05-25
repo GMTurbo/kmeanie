@@ -17,11 +17,9 @@ var KMEANS = function(){
     setTimeout(function(){
       
       pnts = clusterpoints.map(function(curr){return curr});
-      //get ranges
-      var ranges = getDimensions(pnts);
-      
+
       //disperse the centers in the space
-      disperseCenters(ranges, count);
+      disperseCenters(getDimensions(pnts), count);
       
       var converged = false;
       
@@ -125,6 +123,8 @@ var KMEANS = function(){
   
   //disperse centers randomly within the space
   var disperseCenters = function(ranges, num){
+    
+    this.centers = [];
     
     for(var i = 0 ; i < num ; i++){
       

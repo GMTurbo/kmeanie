@@ -1,0 +1,27 @@
+{
+  "name": "kmeans",
+  "version": "0.0.0",
+  "description": "K-Means clusting algo for node",
+  "main": "kmeans.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/test2D.js && node tests/test3D.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GMTurbo/kmeans-npm.git"
+  },
+  "keywords": [
+    "k-means-clustering",
+    "machine-learning",
+    "clustering"
+  ],
+  "author": "Gabe Testa <gabe.testa@gmail.com> (http://www.github.com/gmturbo)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GMTurbo/kmeans-npm/issues"
+  },
+  "homepage": "https://github.com/GMTurbo/kmeans-npm"
+}
