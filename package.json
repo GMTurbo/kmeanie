@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GMTurbo/kmeans-npm.git"
+    "url": "https://github.com/GMTurbo/kmeanie.git"
   },
   "keywords": [
     "k-means-clustering",
@@ -21,7 +21,7 @@
   "author": "Gabe Testa <gabe.testa@gmail.com> (http://www.github.com/gmturbo)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GMTurbo/kmeans-npm/issues"
+    "url": "https://github.com/GMTurbo/kmeanie/issues"
   },
-  "homepage": "https://github.com/GMTurbo/kmeans-npm"
+  "homepage": "https://github.com/GMTurbo/kmeanie"
 }
