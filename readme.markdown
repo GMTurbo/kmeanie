@@ -1,5 +1,5 @@
 # Kmeanie - K-Means Clustering
-
+[![NPM version](https://badge.fury.io/js/kmeanie.svg)](http://badge.fury.io/js/kmeanie)
 
 Need to cluster n-dimensions of points by using their euclidean distances?!  You've come to the right place!
 
