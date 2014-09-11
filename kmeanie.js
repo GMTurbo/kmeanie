@@ -4,7 +4,12 @@
 // then calculate new center (avgX, avgY);
 // then move
 
-var KMEANS = function(){
+var KMEANS = function(options){
+
+  options = options || {};
+
+  if(!options.returnBodies)
+    options.returnBodies = false;
 
   var dimensions = 0, pnts = [];
 
@@ -45,7 +50,8 @@ var KMEANS = function(){
 
       var data = {
         steps: steps,
-        centers: this.centers
+        centers: options.returnBodies ? this.centers :
+         this.centers.map(function(cent){ return cent.center;} )
       };
 
       cb(null, data);

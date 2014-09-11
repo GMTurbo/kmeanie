@@ -1,6 +1,6 @@
 {
   "name": "kmeanie",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "K-Means clusting algo for node",
   "main": "kmeanie.js",
   "directories": {
