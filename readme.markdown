@@ -9,9 +9,9 @@ first, we'll write a helper function to give us some points at different dimensi
 
 ```
 var getPoints = function(count, dimensions, min, max){
-  
+
   var points = [];
-  
+
   for(var i = 0 ; i < count; i++){
     var arr = [];
     for(var j = 0 ; j < dimensions; j++){
@@ -19,9 +19,9 @@ var getPoints = function(count, dimensions, min, max){
     }
     points.push(arr);
   }
-  
+
   return points;
-  
+
 };
 ```
 Now, put 1,000 2D points into 10 clusters
@@ -36,13 +36,13 @@ var randomPoints = getPoints(1000, 2, -10000, 10000);
 console.time('kmeans2D-1K');
 
 kmeans.compile(randomPoints, 10, function(err, data){
-  
+
   if(err){ console.error(err); return; }
-  
+
   console.log('converged!');
-  
+
   console.dir(data);
-  
+
   console.timeEnd('kmeans2D-1K');
 });
 
@@ -70,13 +70,13 @@ var randomPoints = getPoints(10000, 2, -10000, 10000);
 console.time('kmeans2D-10K');
 
 kmeans.compile(randomPoints, 10, function(err, data){
-  
+
   if(err){ console.error(err); return; }
-  
+
   console.log('converged!');
-  
+
   console.dir(data);
-  
+
   console.timeEnd('kmeans2D-10K');
 });
 
@@ -102,13 +102,13 @@ var randomPoints = getPoints(100000, 2, -10000, 10000);
 console.time('kmeans2D-100K');
 
 kmeans.compile(randomPoints, 10, function(err, data){
-  
+
   if(err){ console.error(err); return; }
-  
+
   console.log('converged!');
-  
+
   console.dir(data);
-  
+
   console.timeEnd('kmeans2D-100K');
 });
 
@@ -138,13 +138,13 @@ var randomPoints = getPoints(100000, 3, -10000, 10000);
 console.time('kmeans3D-100K');
 
 kmeans.compile(randomPoints, 10, function(err, data){
-  
+
   if(err){ console.error(err); return; }
-  
+
   console.log('converged!');
-  
+
   console.dir(data);
-  
+
   console.timeEnd('kmeans3D-100K');
 });
 
@@ -174,13 +174,13 @@ k-means clustering is a method of vector quantization, originally from signal pr
 usage:
 
   var KMEANS = require('kmeanie');
-  
+
   //utility function to get random points
-  
+
   var getPoints = function(count, dimensions, min, max){
-    
+
     var points = [];
-    
+
     for(var i = 0 ; i < count; i++){
       var arr = [];
       for(var j = 0 ; j < dimensions; j++){
@@ -188,36 +188,36 @@ usage:
       }
       points.push(arr);
     }
-    
+
     return points;
-    
+
   };
-  
+
   var kmeans = new KMEANS();
-  
+
   //1,000 2D points
-  
+
   var randomPoints = getPoints(1000, 2, -10000, 10000);
-  
+
   //time how long it takes for centers to converge
   console.time('kmeans2D-1K');
-  
+
   //listen for centers positions update
   //this is handy for animations
   kmeans.onCentersUpdated = function(newCenters, iteration){
     console.log('iteration: ' + iteration);
     console.dir(newCenters);
   };
-  
+
   //compile the kmeans algorithm with the point cloud, the number of desired clusters and a cb
   kmeans.compile(randomPoints, 10, function(err, data){
-    
+
     if(err){ console.error(err); return; }
-    
+
     console.log('converged!');
-    
+
     console.dir(data);
-    
+
     console.timeEnd('kmeans2D-1K');
   });
 ```
