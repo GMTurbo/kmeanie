@@ -1,6 +1,6 @@
 {
   "name": "kmeanie",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "K-Means clusting algo for node",
   "main": "kmeanie.js",
   "directories": {
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/GMTurbo/kmeanie/issues"
   },
-  "homepage": "https://github.com/GMTurbo/kmeanie"
+  "homepage": "https://github.com/GMTurbo/kmeanie",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
 }

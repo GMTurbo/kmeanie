@@ -19,9 +19,9 @@ var getPoints = function(count, dimensions, min, max){
 
 };
 
-var kmeans1 = new KMEANS({returnBodies:true});
-var kmeans2 = new KMEANS({returnBodies:true});
-var kmeans3 = new KMEANS({returnBodies:true});
+var kmeans1 = new KMEANS();
+var kmeans2 = new KMEANS();
+var kmeans3 = new KMEANS();
 
 //1,000 2D points
 
@@ -30,18 +30,18 @@ var randomPoints = getPoints(1000, 2, -10000, 10000);
 console.time('kmeans2D-1K');
 
 //listen for centers positions update
-kmeans1.onCentersUpdated = function(newCenters, iteration){
-    console.log('iteration: ' + iteration);
-    console.dir(newCenters);
-};
+// kmeans1.onCentersUpdated = function(newCenters, iteration){
+//     console.log('iteration: ' + iteration);
+//     console.dir(newCenters);
+// };
 
 kmeans1.compile(randomPoints, 10, function(err, data){
 
   if(err){ console.error(err); return; }
 
-  console.log('converged!');
+  //console.log('converged!');
 
-  console.dir(data);
+  //console.dir(data);
 
   console.timeEnd('kmeans2D-1K');
 });
@@ -56,9 +56,9 @@ kmeans2.compile(randomPoints, 10, function(err, data){
 
   if(err){ console.error(err); return; }
 
-  console.log('converged!');
+  //console.log('converged!');
 
-  console.dir(data);
+  //console.dir(data);
 
   console.timeEnd('kmeans2D-10K');
 });
@@ -73,9 +73,9 @@ kmeans3.compile(randomPoints, 10, function(err, data){
 
   if(err){ console.error(err); return; }
 
-  console.log('converged!');
+  //console.log('converged!');
 
-  console.dir(data);
+  //console.dir(data);
 
   console.timeEnd('kmeans2D-100K');
 });

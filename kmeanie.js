@@ -1,27 +1,44 @@
-
 //for kmeans,
 // first group points,
 // then calculate new center (avgX, avgY);
 // then move
 
-var KMEANS = function(options){
+var _ = require('lodash');
+
+
+var KMEANS = function(options) {
 
   options = options || {};
 
-  if(!options.returnBodies)
-    options.returnBodies = false;
+  if (!options.returnBodies) options.returnBodies = false;
+  if (!options.filterPoints) options.filterPoints = false;
 
-  var dimensions = 0, pnts = [];
+  var dimensions = 0,
+    pnts = [];
 
   this.centers = [];
 
   this.onCentersUpdated = null;
 
-  this.compile = function(clusterpoints, count, cb){
+  this.compile = function(clusterpoints, count, cb) {
 
-    setTimeout(function(){
+    setTimeout(function() {
 
-      pnts = clusterpoints.slice(0);
+      var index = 0;
+
+      if (options.filterPoints) {
+        pnts = _.filter(clusterpoints, function(element, index) {
+          // tests if the element has a duplicate in the rest of the array
+          for (index += 1, length = clusterpoints.length; index < length; index += 1) {
+            if (_.isEqual(element, clusterpoints[index])) {
+              return false;
+            }
+          }
+          return true;
+        });
+      } else {
+        pnts = clusterpoints.slice(0);
+      }
 
       //disperse the centers in the space
       disperseCenters(getDimensions(pnts), count);
@@ -31,27 +48,28 @@ var KMEANS = function(options){
       var oldCenters = [];
       var steps = 0;
       //iterate
-      while(!converged){
+      while (!converged) {
 
-          cluster();
+        cluster();
 
-          converged = checkForStable(oldCenters);
+        converged = checkForStable(oldCenters);
 
-          oldCenters = this.centers.map(function(cent){
-            return cent.center;
-          });
+        oldCenters = _.map(this.centers, function(cent) {
+          return cent.center;
+        });
 
-          if(this.onCentersUpdated){
-            this.onCentersUpdated(oldCenters, steps + 1);
-          }
+        if (this.onCentersUpdated) {
+          this.onCentersUpdated(oldCenters, steps + 1);
+        }
 
-          steps++;
+        steps++;
       }
 
       var data = {
         steps: steps,
-        centers: options.returnBodies ? this.centers :
-         this.centers.map(function(cent){ return cent.center;} )
+        centers: options.returnBodies ? this.centers : _.map(this.centers, function(cent) {
+          return cent.center;
+        })
       };
 
       cb(null, data);
@@ -60,20 +78,20 @@ var KMEANS = function(options){
 
   };
 
-  var checkForStable = function(oldCenters){
+  var checkForStable = function(oldCenters) {
 
-    if(oldCenters.length === 0 ) return false;
+    if (oldCenters.length === 0) return false;
 
-    var newCenters = this.centers.map(function(cent){
-            return cent.center;
-          });
+    var newCenters = _.map(this.centers, function(cent) {
+      return cent.center;
+    });
 
     var tolerance = 1e-6;
 
-    for(var i = 0 ; i < newCenters.length; i++){
+    for (var i = 0; i < newCenters.length; i++) {
 
-        if(distance(newCenters[i], oldCenters[i]) > tolerance)
-          return false;
+      if (distance(newCenters[i], oldCenters[i]) > tolerance)
+        return false;
 
     }
 
@@ -81,61 +99,67 @@ var KMEANS = function(options){
 
   }.bind(this);
 
-  var getAverages = function(points){
-    if(points.length == 0) return [0,0];
+  var getAverages = function(points) {
+    if (points.length == 0)
+      return [0, 0];
+
     var arr = [];
-    for(var i = 0 ; i < points[0].length; i++)
+    for (var i = 0; i < points[0].length; i++)
       arr.push(0);
 
-    var sums = points.reduce(function(sums, current){
-      for(var i = 0 ; i < current.length; i++){
-        sums[i]+=current[i];
+    var sums = _.reduce(points, function(sums, current) {
+      for (var i = 0; i < current.length; i++) {
+        sums[i] += current[i];
       }
       return sums;
     }, arr);
-    return sums.map(function(curr) { return curr/points.length; });
+
+    return _.map(sums, function(curr) {
+      return curr / points.length;
+    });
   };
 
   //this gets the range in each dimension to
   //disperse the cluster centers
-  var getDimensions = function(points){
+  var getDimensions = function(points) {
 
-      dimensions = points[0].length;
-      var i, maximums = [], minimums = [];
+    dimensions = points[0].length;
+    var i, maximums = [],
+      minimums = [];
 
-      for( i = 0 ; i < dimensions; i++){
-        maximums.push(-1e6);
-        minimums.push(1e6);
+    for (i = 0; i < dimensions; i++) {
+      maximums.push(-1e6);
+      minimums.push(1e6);
+    }
+
+    for (i = 0; i < points.length; i++) {
+      for (var j = 0; j < dimensions; j++) {
+        if (points[i][j] > maximums[j])
+          maximums[j] = points[i][j];
+        if (points[i][j] < minimums[j])
+          minimums[j] = points[i][j];
       }
+    }
 
-      for( i = 0 ; i < points.length; i++){
-        for(var j = 0; j < dimensions; j++){
-          if(points[i][j] > maximums[j])
-            maximums[j] = points[i][j];
-          if(points[i][j] < minimums[j])
-            minimums[j] = points[i][j];
-        }
-      }
+    var retArr = [];
+    for (i = 0; i < dimensions; i++) {
+      retArr.push([minimums[i], maximums[i]]);
+    }
 
-      var retArr = [];
-      for(i = 0 ; i < dimensions ; i++){
-        retArr.push([minimums[i], maximums[i]]);
-      }
-
-      return retArr;
+    return retArr;
   };
 
   //disperse centers randomly within the space
-  var disperseCenters = function(ranges, num){
+  var disperseCenters = function(ranges, num) {
 
     this.centers = [];
 
-    for(var i = 0 ; i < num ; i++){
+    for (var i = 0; i < num; i++) {
 
       var cent = [];
 
-      ranges.forEach(function(dim){
-        cent.push(dim[0] + Math.random()*(dim[1] - dim[0]));
+      _.forEach(ranges, function(dim) {
+        cent.push(dim[0] + Math.random() * (dim[1] - dim[0]));
       });
 
       this.centers.push({
@@ -147,36 +171,36 @@ var KMEANS = function(options){
 
   }.bind(this);
 
-  var distance = function(pnt1, pnt2){
+  var distance = function(pnt1, pnt2) {
     var sum = 0;
-    if(!pnt1.length)
+    if (!pnt1.length)
       return Math.sqrt(Math.pow(pnt1 - pnt2, 2));
-    for(var i = 0 ; i < pnt1.length ; i++){
+    for (var i = 0; i < pnt1.length; i++) {
       sum += (Math.pow(pnt1[i] - pnt2[i], 2));
     }
     return Math.sqrt(sum);
   };
 
-  var cluster = function(){
+  var cluster = function() {
 
     var min, dis, assignToIndex, i;
 
-    this.centers.forEach(function(cluster){
+    _.forEach(this.centers, function(cluster) {
       cluster.bodies = [];
     });
 
     //assign step
-    for( i = 0 ; i < pnts.length ; i++){
+    for (i = 0; i < pnts.length; i++) {
 
       min = 1e6;
 
       assignToIndex = -1;
 
-      for(var j = 0 ; j < this.centers.length ; j++){
+      for (var j = 0; j < this.centers.length; j++) {
 
         dis = distance(pnts[i], this.centers[j].center);
 
-        if(dis < min){
+        if (dis < min) {
           min = dis;
           assignToIndex = j;
         }
@@ -187,7 +211,7 @@ var KMEANS = function(options){
     }
 
     //move step
-    for( i = 0 ; i < this.centers.length ; i++){
+    for (i = 0; i < this.centers.length; i++) {
       this.centers[i].center = getAverages(this.centers[i].bodies);
     }
 
