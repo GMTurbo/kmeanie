@@ -7,7 +7,7 @@ Need to cluster n-dimensions of points by using their euclidean distances?!  You
 
 first, we'll write a helper function to give us some points at different dimensions within some range
 
-```
+```javascript
 var getPoints = function(count, dimensions, min, max){
 
   var points = [];
@@ -26,7 +26,7 @@ var getPoints = function(count, dimensions, min, max){
 ```
 Now, put 1,000 2D points into 10 clusters
 
-```
+```javascript
 //1,000 2D points
 
 var kmeans = new KMEANS();
@@ -60,7 +60,7 @@ kmeans.compile(randomPoints, 10, function(err, data){
 
 put 10,000 2D points into 10 clusters
 
-```
+```javascript
 //10,000 2D points
 
 var kmeans = new KMEANS();
@@ -94,7 +94,7 @@ kmeans.compile(randomPoints, 10, function(err, data){
 
 put 100,000 2D points into 10 clusters
 
-```
+```javascript
 //100,000 2D points
 
 var randomPoints = getPoints(100000, 2, -10000, 10000);
@@ -130,7 +130,7 @@ kmeans.compile(randomPoints, 10, function(err, data){
 ```
 put 100,000 3D points into 10 clusters
 
-```
+```javascript
 //100,000 2D points
 
 var randomPoints = getPoints(100000, 3, -10000, 10000);
@@ -170,7 +170,7 @@ k-means clustering is a method of vector quantization, originally from signal pr
 
 # usage
 
-```
+```javascript
 usage:
 
   var KMEANS = require('kmeanie');
@@ -234,7 +234,7 @@ runs the example tests.
 var KMEANS = require('kmeanie');
 ```
 
-## var tps = new KMEANS();
+## var kmeans = new KMEANS();
 
 Create a k-means algo instance;
 
@@ -254,6 +254,20 @@ The more clusters you have, the longer it takes to compile.
 * `newCenters` is the newly moved cluster center points
 * `iteration` is the current iteration count
 
+# Options
+```javascript
+defaultOptions = {
+  returnBodies: false, //on cb of compile, cluster centers and cluster points returned
+  filterPoints: false //filter input point to remove redundant point (VERY EXPENSIVE)
+}
+```
+###example of overloading options
+```javascript
+var kmeans = new KMEANS({
+  returnBodies: true,
+  filterPoints: true //VERY EXPENSIVE, USE WITH CAUTION
+});
+```
 
 # install
 
